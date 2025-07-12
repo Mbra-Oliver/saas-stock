@@ -34,12 +34,16 @@ class AuthService
                 'name' => $data['company_name'],
             ]);
 
-            $token = $user->createToken('auth-token')->plainTextToken;
+            $token = $user->createToken('auth-token', [
+                'role' => 'COMPANY',
+                'company_id' => $company->id
+            ])->plainTextToken;
 
             return [
                 'user' => $user,
                 'token' => $token,
-                'company' => $company
+                'company' => $company,
+                'role' => 'COMPANY'
             ];
         });
     }
@@ -61,10 +65,13 @@ class AuthService
         $user->tokens()->delete();
 
         $token = $user->createToken('auth-token')->plainTextToken;
+        $enterprises = $user->enterprises()->get();
 
         return [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'enterprises' => $enterprises,
+            'default_enterprise' => $this->companyService->getDefaultEnterpriseOfUser()
         ];
     }
 

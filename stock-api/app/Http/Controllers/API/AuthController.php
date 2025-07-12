@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'user' => new UserResource($result['user']),
                 'token' => $result['token'],
                 'company' => $result['company']
-            ], 'Accoun Create successfully', 201);
+            ], 'Account Create successfully', 201);
         } catch (\Exception $e) {
             Log::channel('auth')->error('Registration failed', [
                 'email' => $request->email,
@@ -72,7 +72,9 @@ class AuthController extends Controller
 
             return $this->success([
                 'user' => new UserResource($result['user']),
-                'token' => $result['token']
+                'token' => $result['token'],
+                'enterprises' => $result['enterprises'],
+                'default_enterprise' => $result['default_enterprise']
             ], 'Login successful');
         } catch (\Exception $e) {
             Log::channel('auth')->warning('Login failed', [
