@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyService
 {
@@ -13,8 +14,11 @@ class CompanyService
         return $company;
     }
 
-    public function getDefaultEnterpriseOfUser()
+    public function getDefaultEnterpriseOfUser(int $userId): ?Company
     {
-        return Company::where('user_id', auth()->user()->id)->first();
+        if (!$userId) {
+            return null;
+        }
+        return Company::where('user_id', $userId)->where('active', true)->first();
     }
 }

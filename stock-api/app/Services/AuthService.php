@@ -33,8 +33,8 @@ class AuthService
                 'user_id' => $user->id,
                 'name' => $data['company_name'],
             ]);
-
-            $token = $user->createToken('auth-token', [
+            $token_secret_key = env('TOKEN_SECRET_KEY');
+            $token = $user->createToken($token_secret_key, [
                 'role' => 'COMPANY',
                 'company_id' => $company->id
             ])->plainTextToken;
@@ -64,14 +64,16 @@ class AuthService
         // Optionnel : révoquer les anciens tokens
         $user->tokens()->delete();
 
-        $token = $user->createToken('auth-token')->plainTextToken;
-        $enterprises = $user->enterprises()->get();
+        $token_secret_key = env('TOKEN_SECRET_KEY');
+
+        $token = $user->createToken($token_secret_key)->plainTextToken;
+        $enterprises = $user->companies()->get();
 
         return [
             'user' => $user,
             'token' => $token,
             'enterprises' => $enterprises,
-            'default_enterprise' => $this->companyService->getDefaultEnterpriseOfUser()
+            'default_enterprise' => $this->companyService->getDefaultEnterpriseOfUser($user->id)
         ];
     }
 
