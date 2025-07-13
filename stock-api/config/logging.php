@@ -73,6 +73,13 @@ return [
             'days' => 30,
         ],
 
+        'warehouse' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/warehouse.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+        ],
+
         // Channel pour la gestion de stock
         'stock' => [
             'driver' => 'daily',

@@ -60,4 +60,13 @@ class Warehouse extends Model
             ($this->postal_code ? ", {$this->postal_code}" : '') .
             ", {$this->country}";
     }
+
+
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('stock_quantity', 'location')
+            ->withTimestamps();
+    }
 }

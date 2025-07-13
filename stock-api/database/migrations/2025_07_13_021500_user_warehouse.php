@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('user_warehouse', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('city')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
             $table->boolean('active')->default(true);
             $table->timestamps();
+
+            $table->unique(['user_id', 'warehouse_id']); // empêche les doublons
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('user_warehouse');
     }
 };

@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Requests\Warehouse;
@@ -32,7 +31,7 @@ class StoreWarehouseRequest extends FormRequest
             'capacity' => 'nullable|numeric|min:0|max:999999.99',
             'type' => 'sometimes|in:main,secondary,temporary',
             'active' => 'sometimes|boolean',
-            'company_id' => 'required|exists:companies,id',
+
         ];
     }
 
@@ -48,8 +47,7 @@ class StoreWarehouseRequest extends FormRequest
             'capacity.numeric' => 'La capacité doit être un nombre.',
             'capacity.min' => 'La capacité doit être positive.',
             'type.in' => 'Le type d\'entrepôt doit être: main, secondary ou temporary.',
-            'company_id.required' => 'L\'entreprise est obligatoire.',
-            'company_id.exists' => 'L\'entreprise sélectionnée n\'existe pas.',
+
         ];
     }
 

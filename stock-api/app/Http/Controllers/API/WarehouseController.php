@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\APi;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Warehouse\StoreWarehouseRequest;
+use App\Http\Requests\Warehouse\UpdateWarehouseRequest;
+use App\Http\Resources\WarehouseResource;
 use App\Services\WarehouseService;
 use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WarehouseController extends Controller
 {
@@ -18,21 +23,27 @@ class WarehouseController extends Controller
     /**
      * Display a listing of warehouses
      */
+
     public function index(Request $request): JsonResponse
     {
         try {
             $filters = $request->only(['company_id', 'type', 'active', 'search']);
-            $warehouses = $this->warehouseService->getWarehouses($filters);
+            $perPage = $request->get('per_page', 10); // Par défaut 15 éléments par page
+
+            $warehouses = $this->warehouseService->getWarehousesPaginated($filters, $perPage);
 
             Log::channel('warehouse')->info('Warehouses retrieved', [
                 'filters' => $filters,
-                'count' => $warehouses->count(),
+                'total' => $warehouses->total(),
+                'per_page' => $perPage,
+                'current_page' => $warehouses->currentPage(),
                 'user_id' => auth()->id()
             ]);
 
-            return $this->success(
-                new WarehouseCollection($warehouses),
-                'Warehouses retrieved successfully'
+            return $this->successWithPagination(
+                WarehouseResource::collection($warehouses),
+                'Warehouses retrieved successfully',
+                $warehouses
             );
         } catch (\Exception $e) {
             Log::channel('warehouse')->error('Failed to retrieve warehouses', [
@@ -159,55 +170,55 @@ class WarehouseController extends Controller
         }
     }
 
-    /**
-     * Get warehouses by company
-     */
-    public function byCompany(int $companyId): JsonResponse
-    {
-        try {
-            $warehouses = $this->warehouseService->getWarehousesByCompany($companyId);
+    // /**
+    //  * Get warehouses by company
+    //  */
+    // public function byCompany(int $companyId): JsonResponse
+    // {
+    //     try {
+    //         $warehouses = $this->warehouseService->getWarehousesByCompany($companyId);
 
-            return $this->success(
-                new WarehouseCollection($warehouses),
-                'Company warehouses retrieved successfully'
-            );
-        } catch (\Exception $e) {
-            Log::channel('warehouse')->error('Failed to retrieve company warehouses', [
-                'company_id' => $companyId,
-                'error' => $e->getMessage(),
-                'user_id' => auth()->id()
-            ]);
+    //         return $this->success(
+    //             new WarehouseCollection($warehouses),
+    //             'Company warehouses retrieved successfully'
+    //         );
+    //     } catch (\Exception $e) {
+    //         Log::channel('warehouse')->error('Failed to retrieve company warehouses', [
+    //             'company_id' => $companyId,
+    //             'error' => $e->getMessage(),
+    //             'user_id' => auth()->id()
+    //         ]);
 
-            return $this->error('Failed to retrieve company warehouses', 500);
-        }
-    }
+    //         return $this->error('Failed to retrieve company warehouses', 500);
+    //     }
+    // }
 
-    /**
-     * Toggle warehouse status
-     */
-    public function toggleStatus(int $id): JsonResponse
-    {
-        try {
-            $warehouse = $this->warehouseService->toggleWarehouseStatus($id);
+    // /**
+    //  * Toggle warehouse status
+    //  */
+    // public function toggleStatus(int $id): JsonResponse
+    // {
+    //     try {
+    //         $warehouse = $this->warehouseService->toggleWarehouseStatus($id);
 
-            Log::channel('warehouse')->info('Warehouse status toggled', [
-                'warehouse_id' => $id,
-                'new_status' => $warehouse->active,
-                'user_id' => auth()->id()
-            ]);
+    //         Log::channel('warehouse')->info('Warehouse status toggled', [
+    //             'warehouse_id' => $id,
+    //             'new_status' => $warehouse->active,
+    //             'user_id' => auth()->id()
+    //         ]);
 
-            return $this->success(
-                new WarehouseResource($warehouse),
-                'Warehouse status updated successfully'
-            );
-        } catch (\Exception $e) {
-            Log::channel('warehouse')->error('Failed to toggle warehouse status', [
-                'warehouse_id' => $id,
-                'error' => $e->getMessage(),
-                'user_id' => auth()->id()
-            ]);
+    //         return $this->success(
+    //             new WarehouseResource($warehouse),
+    //             'Warehouse status updated successfully'
+    //         );
+    //     } catch (\Exception $e) {
+    //         Log::channel('warehouse')->error('Failed to toggle warehouse status', [
+    //             'warehouse_id' => $id,
+    //             'error' => $e->getMessage(),
+    //             'user_id' => auth()->id()
+    //         ]);
 
-            return $this->error('Failed to update warehouse status', 500);
-        }
-    }
+    //         return $this->error('Failed to update warehouse status', 500);
+    //     }
+    // }
 }

@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique(); // Code unique pour l'entrepôt
             $table->text('description')->nullable();
-            $table->string('address');
-            $table->string('city');
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->decimal('capacity', 10, 2)->nullable(); // Capacité en m²
