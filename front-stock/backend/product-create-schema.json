@@ -1,0 +1,44 @@
+{
+  "name": "Iphone 15",
+  "description": "",
+  "sku": "C9595995",
+  "barcode": "",
+  "category": "vetements",
+  "brand": "",
+  "price": 100,
+  "cost": 100000,
+  "quantity": 20,
+  "minStock": 10,
+  "maxStock": 0,
+  "location": "",
+  "supplier": "",
+  "unit": "pièce",
+  "weight": 0,
+  "dimensions": {
+    "length": 0,
+    "width": 0,
+    "height": 0
+  },
+  "images": [
+    {
+      "file": {},
+      "isPrimary": false
+    },
+    {
+      "file": {},
+      "isPrimary": true
+    },
+    {
+      "file": {},
+      "isPrimary": false
+    },
+    {
+      "file": {},
+      "isPrimary": false
+    },
+    {
+      "file": {},
+      "isPrimary": false
+    }
+  ]
+}
