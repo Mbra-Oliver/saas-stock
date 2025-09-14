@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Users\RegisterUserRequest;
 use App\Service\AuthService;
 use App\Traits\ApiResponse;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -15,16 +17,20 @@ class AuthController extends Controller
 
     }
 
+    public function register(RegisterUserRequest $request):JsonResponse{
 
-    public function test():JsonResponse{
+        dd($request);
+        try{
 
-        $result = $this->authService->registerUser();
+        }catch(Exception $e){
 
-        return $this->success(
-            $result['data'],
-            'odooflflflfl'
-        );
+
+            return $this->error([],$e->getMessage(), 500);
+        }
 
     }
+
+
+
 
 }

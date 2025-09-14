@@ -91,6 +91,8 @@ trait ApiResponse
         $errors = [],
         string $message = 'Erreur de validation '
     ): JsonResponse {
+
+
         return response()->json([
             'success' => false,
             'message' => $message,
