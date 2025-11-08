@@ -1,0 +1,42 @@
+UI/Design System :
+
+Shadcn/ui : composants modernes, customisables, basés sur Radix
+Tailwind CSS : styling rapide et cohérent
+Lucide React : icônes modernes et légères
+
+Gestion d'état :
+
+Zustand : simple, performant, parfait pour les apps moyennes
+TanStack Query : gestion des appels API, cache, synchronisation
+
+Formulaires :
+
+React Hook Form : performance optimale
+Zod : validation de schémas TypeScript-first
+
+Tables/Data :
+
+TanStack Table : tables complexes, tri, filtres, pagination
+Recharts : graphiques pour les analytics de stock
+
+Notifications/Feedback :
+
+Sonner : toasts élégants
+Framer Motion : animations fluides
+
+Utilitaires :
+
+date-fns : manipulation des dates
+clsx : gestion conditionnelle des classes CSS
+
+Authentification côté client :
+
+NextAuth.js ou Auth0 (si tu veux déléguer)
+
+Avantages de cette stack :
+
+Très populaire dans la communauté (bon pour Patreon)
+Documentation excellente
+TypeScript-first
+Bundle size optimisé
+Maintenance active
